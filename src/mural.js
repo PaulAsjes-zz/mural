@@ -21,7 +21,9 @@
 
     var items = [];
     for (var i = 0; i < $items.length; i++) {
-      items.push(new Item($items[i]));
+      var item = new Item($items[i], i);
+      item.getElement().bind(Item.DRAG_END, onDrop);
+      items.push(item);
     }
 
     containerOffset = this.offset();
@@ -38,6 +40,10 @@
 
     return this;
   };
+
+  function onDrop(e) {
+    console.log("dropped");
+  }
 
   // Static method default options.
   $.fn.mural.defaults = {

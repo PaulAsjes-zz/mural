@@ -1,11 +1,10 @@
-function Item(element) {
+function Item(element, id) {
     "use strict";
 	var moving = false,
         $ = window.jQuery,
 		$element = $(element),
 		halfWidth = $element.width() / 2,
 		halfHeight = $element.height() / 2;
-        // offset = $element.offset();
 
     function onDragStart(e) {
         $element.addClass("active");
@@ -16,11 +15,13 @@ function Item(element) {
     function onDragEnd() {
         moving = false;
         $element.removeClass("active");
+        $element.trigger(Item.DRAG_END);
     }
 
     function onMove(e) {
-        if (!moving)
+        if (!moving) {
             return;
+        }
 
         var x = e.pageX;
         var y = e.pageY;
@@ -50,10 +51,13 @@ function Item(element) {
     $element.bind("touchmove", onMove);
 
     $element.bind("mousedown", onDragStart);
-    document.addEventListener("mouseup", onDragEnd);
-    document.addEventListener("mousemove", onMove);
+    window.document.addEventListener("mouseup", onDragEnd);
+    window.document.addEventListener("mousemove", onMove);
 
     this.getElement = function() {
         return $element;
     };
 }
+
+Item.DRAG_END = "dragend";
+Item.DRAG_START = "dragstart";
