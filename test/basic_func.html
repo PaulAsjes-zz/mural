@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Mural Test Suite</title>
+  <!-- Load local jQuery. -->
+  <script src="../bower_components/jquery/dist/jquery.js"></script>
+  <!-- Load local lib and tests. -->
+  <script src="../src/mural.js"></script>
+  <script src="../src/item.js"></script>
+  <link rel="stylesheet" href="mural.css">
+  <script>
+    $(function() {
+      $("#container").mural({
+        itemSelector: ".mural-item",
+        speed: 500
+      });
+    });
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="mural-item"></div>
+    <div class="mural-item"></div>
+    <div class="mural-item"></div>
+    <div class="mural-item"></div>
+  </div>
+</body>
+</html>

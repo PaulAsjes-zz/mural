@@ -1,0 +1,28 @@
+{
+  "name": "mural",
+  "title": "Mural",
+  "description": "Customisable tiled presentation",
+  "version": "0.0.1",
+  "homepage": "",
+  "author": {
+    "name": "Paul Asjes",
+    "url": "https://github.com/PaulAsjes"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": "",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://opensource.org/licenses/MIT"
+    }
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1"
+  },
+  "keywords": [
+    "jquery-plugin"
+  ]
+}
