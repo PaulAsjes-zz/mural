@@ -16,7 +16,10 @@ In your web page:
 <script src="dist/mural.min.js"></script>
 <script>
 jQuery(function($) {
-  $.awesome(); // "awesome"
+  $("#container").mural({
+  	itemSelector: ".mural-item",
+  	speed: 500
+  });
 });
 </script>
 ```

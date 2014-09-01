@@ -7,7 +7,7 @@
  */
 
 (function ($) {
-  "use-strict";
+  "use strict";
 
   var noop = function() {},
       settings = {},
@@ -26,7 +26,7 @@
 
     containerOffset = this.offset();
 
-    /*var delay;
+    var delay;
     $(window).resize(function() {
       clearTimeout(delay);
       delay = setTimeout(function() {
@@ -34,7 +34,7 @@
       }, 150);
     });
 
-    drawItems(items);*/
+    drawItems(items);
 
     return this;
   };
