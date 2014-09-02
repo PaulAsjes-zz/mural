@@ -44,7 +44,14 @@
     function onDrop(e, id) {
         var items = Array.prototype.slice.call(e.data.items);
         if (e.currentTarget !== items[id]) return;
-        var current = items[id]
+        var current = items[id];
+        for (var i = 0; i < items.length; i++) {
+            if (current !== items[i]) {
+                if (overlaps(current, items[i], false, containerOffset)) {
+                    console.log("overlaps");
+                }
+            }
+        }
     }
 
     // Static method default options.

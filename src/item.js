@@ -1,5 +1,4 @@
 function Item(element, id) {
-    "use strict";
 	var moving = false,
         $ = window.jQuery,
 		$element = $(element),

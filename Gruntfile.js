@@ -25,7 +25,7 @@ module.exports = function (grunt) {
         stripBanners: true
       },
       dist: {
-        src: ['src/<%= pkg.name %>.js'],
+        src: ['src/*.js'],
         dest: 'dist/jquery.<%= pkg.name %>.js'
       }
     },
@@ -75,7 +75,7 @@ module.exports = function (grunt) {
       },
       src: {
         files: '<%= jshint.src.src %>',
-        tasks: ['jshint:src', 'qunit']
+        tasks: ['jshint:src', 'concat:dist']
       },
       test: {
         files: '<%= jshint.test.src %>',
@@ -86,7 +86,18 @@ module.exports = function (grunt) {
       server: {
         options: {
           hostname: '*',
-          port: 9000
+          port: 7000
+        }
+      }
+    },
+    file_append: {
+      default: {
+        files: {
+          "dist/jquery.mural.js": {
+            prepend: "(function($) {",
+            append: "})(jQuery);",
+            input: "dist/jquery.mural.js"
+          }
         }
       }
     }
