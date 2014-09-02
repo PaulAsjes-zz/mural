@@ -23,10 +23,11 @@ html, body {
   cursor: pointer;
   width: 50px;
   height: 50px;
-  /*border-radius: 50%;*/
+  border-radius: 50%;
   position: absolute;
   outline: none;
   user-select: none;
+  z-index: 1;
 
   will-change: transform;
   -webkit-backface-visibility: hidden;
@@ -51,6 +52,10 @@ html, body {
 
   -webkit-backface-visibility: hidden;
   will-change: transform;
+}
+
+.mural-item.active {
+  z-index: 10;
 }
 
 .mural-item:before {

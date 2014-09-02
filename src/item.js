@@ -13,9 +13,11 @@ function Item(element, id) {
     }
 
     function onDragEnd() {
+        if (moving) {
+            $element.trigger(Item.DRAG_END, id);
+        }
         moving = false;
         $element.removeClass("active");
-        $element.trigger(Item.DRAG_END);
     }
 
     function onMove(e) {
