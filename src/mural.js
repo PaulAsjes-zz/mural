@@ -23,7 +23,7 @@
         for (var i = 0; i < $items.length; i++) {
             var item = new Item($items[i], i);
             items.push(item);
-            item.getJQElement().bind(Item.DRAG_END, {items: $items}, onDrop);
+            item.getJQElement().bind(Item.DRAG_END, onDrop);
         }
 
         containerOffset = this.offset();
@@ -42,7 +42,7 @@
     };
 
     function onDrop(e, id) {
-        if (e.currentTarget !== items[id].getElement()) return;
+        console.log("droppa drop");
         var $current = items[id].getJQElement();
 
         var hasMatch = false;
@@ -73,6 +73,8 @@
                         if (orientation === "right") n = 1;
                     }
 
+                    console.log( "swapping " + (dropped + n) + " with: " + dragged );
+
                     items.splice(dropped + n, 0, items.splice(dragged, 1).pop());
 
                     hasMatch = true;
@@ -88,6 +90,7 @@
                 items.splice(0, 0, items.splice(pos, 1).pop());
             } else if (isItemAtBottom($current, items[items.length - 1].getJQElement())) {
                 items.splice(items.length, 0, items.splice(pos, 1).pop());
+                console.log("bottom");
             }
         }
 
