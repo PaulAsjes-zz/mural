@@ -56,8 +56,12 @@ function Item(element, id) {
     window.document.addEventListener("mousemove", onMove);
 
     this.getElement = function() {
-        return $element;
+        return element;
     };
+
+    this.getJQElement = function() {
+        return $element;
+    }
 }
 
 Item.DRAG_END = "dragend";

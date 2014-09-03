@@ -1,5 +1,7 @@
 // collision detection between two elements
 var overlaps = (function(window) {
+    "use-strict";
+
     var $ = window.jQuery;
     function getPositions(elem)
     {
