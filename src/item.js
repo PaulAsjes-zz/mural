@@ -61,7 +61,7 @@ function Item(element, id) {
 
     this.getJQElement = function() {
         return $element;
-    }
+    };
 }
 
 Item.DRAG_END = "dragend";
