@@ -13,15 +13,14 @@
         settings = {},
         containerOffset,
         items = [];
-
-  // Collection method.
+    // Collection method.
     $.fn.mural = function (options) {
         settings = $.extend({}, $.fn.mural.defaults, options);
 
         var $items = $(settings.itemSelector);
 
         for (var i = 0; i < $items.length; i++) {
-            var item = new Item($items[i], i);
+            var item = new Item($items[i], i, settings.animationType);
             items.push(item);
             item.getJQElement().bind(Item.DRAG_END, onDrop);
         }
@@ -41,9 +40,29 @@
         return this;
     };
 
-    function onDrop(e, id) {
-        console.log("droppa drop");
-        var $current = items[id].getJQElement();
+    /* IE detection. Gist: https://gist.github.com/julianshapiro/9098609 */
+    var IE = (function() {
+        if (document.documentMode) {
+            return document.documentMode;
+        } else {
+            for (var i = 10; i > 4; i--) {
+                var div = document.createElement("div");
+
+                div.innerHTML = "<!--[if IE " + i + "]><span></span><![endif]-->";
+
+                if (div.getElementsByTagName("span").length) {
+                    div = null;
+
+                    return i;
+                }
+            }
+        }
+
+        return undefined;
+    })();
+
+    function onDrop(e) {
+        var $current = $(e.currentTarget);
 
         var hasMatch = false;
 
@@ -64,7 +83,8 @@
                     var dragged = elementArray.indexOf($current[0]);
                     var dropped = elementArray.indexOf(items[i].getElement());
 
-                    console.log(dropped);
+                    console.log($current.html());
+                    console.log(dragged, dropped);
 
                     var n = 0;
                     if (dragged < dropped) {
@@ -73,9 +93,8 @@
                         if (orientation === "right") n = 1;
                     }
 
-                    console.log( "swapping " + (dropped + n) + " with: " + dragged );
-
-                    items.splice(dropped + n, 0, items.splice(dragged, 1).pop());
+                    items.splice(dropped + n, 0, items.splice(dragged, 1).shift());
+                    elementArray.splice(dropped + n, 0, elementArray.splice(dragged, 1).shift());
 
                     hasMatch = true;
                     break;
@@ -83,14 +102,19 @@
             }
         }
 
+        var debug = elementArray.map(function(el) {
+           return el.innerHTML;
+        });
+
+        console.log(debug);
+
         if (!hasMatch) {
             var pos = elementArray.indexOf($current[0]);
 
             if (isItemAtTop($current, items[0].getJQElement())) {
-                items.splice(0, 0, items.splice(pos, 1).pop());
+                items.splice(0, 0, items.splice(pos, 1).shift());
             } else if (isItemAtBottom($current, items[items.length - 1].getJQElement())) {
-                items.splice(items.length, 0, items.splice(pos, 1).pop());
-                console.log("bottom");
+                items.splice(items.length, 0, items.splice(pos, 1).shift());
             }
         }
 
@@ -124,7 +148,8 @@
         hgap: 50,
         maxColumns: 5,
         shrinkOnResize: true,
-        onReshuffle: noop
+        onReshuffle: noop,
+        animationType: "css" // options should be css, jquery, velocity or auto
     };
 
     function drawItems(items) {
@@ -163,13 +188,54 @@
     function animateItems(items) {
         for (var i = 0; i < items.length; i++) {
             var $item = items[i].getJQElement();
-            $item.stop(true, false);
             var o = $item.position();
 
             // Only animate if there is a change in position
             if (o.top !== $item[0].newT || o.left !== $item[0].newL) {
                 var t = (i * 60 > 900) ? 900 : i * 60;
-                $item.animate({"top": $item[0].newT, "left": $item[0].newL}, 100 + t);
+
+                switch (settings.animationType) {
+                    case "jquery":
+                        $item.stop(true, false);
+                        $item.animate({"top": $item[0].newT, "left": $item[0].newL}, 100 + t);
+                        break;
+
+                    case "velocity":
+                        // TODO: graceful fallback to CSS or jquery if velocity is not found
+                        break;
+
+                    case "auto":
+                        /* TODO: auto detect which animation type to use in the following order:
+                        * 1. Velocity
+                        * 2. CSS
+                        * 3. jQuery
+                        */
+                        break;
+
+                    default:
+                    case "css":
+                        // TODO: graceful fallback to jquery if browser can't handle CSS transitions. Throw error if CSS classes are not present
+
+                        if (IE !== undefined && IE < 10) {
+                            // fall back to jQuery
+                            settings.animationType = "jquery";
+                            animateItems(items);
+                            return;
+                        }
+
+                        var transform = "translate(" + $item[0].newL + "px, " + $item[0].newT + "px)";
+                        $item.addClass("animate");
+                        $item.css("-webkit-transform", transform);
+                        $item.css("transform", transform);
+
+                        // remove animate after complete
+                        (function(index) {
+                            setTimeout(function() {
+                                items[index].getJQElement().removeClass("animate");
+                            }, settings.speed);
+                        })(i);
+                        break;
+                }
             }
         }
     }

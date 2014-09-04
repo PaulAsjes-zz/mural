@@ -1,6 +1,7 @@
-function Item(element, id) {
+var Item = function(el, id, animationType) {
 	var moving = false,
         $ = window.jQuery,
+        element = el,
 		$element = $(element),
 		halfWidth = $element.width() / 2,
 		halfHeight = $element.height() / 2;
@@ -14,6 +15,7 @@ function Item(element, id) {
     function onDragEnd() {
         if (moving) {
             $element.trigger(Item.DRAG_END, id);
+            console.warn(id);
         }
         moving = false;
         $element.removeClass("active");
@@ -36,15 +38,25 @@ function Item(element, id) {
     }
 
     function setPosition(x, y) {
-        var offset = {left: parseInt($element.css("left"), 10), top: parseInt($element.css("top"), 10)};
-        var dx = (x - halfWidth) - offset.left;
-        var dy = (y - halfHeight) - offset.top;
+        // this might not be needed
+        var offset = {left: parseInt($element.css("left"), 10) || 0, top: parseInt($element.css("top"), 10) || 0};
+        var dx = (x - halfWidth) //- offset.left;
+        var dy = (y - halfHeight) //- offset.top;
 
-        var transform = "translate(" + dx + "px, " + dy + "px)";
+        switch (animationType) {
+            case "velocity":
+            case "jquery":
+                $element.offset({left: dx, top: dy});
+                break;
 
-        $element.css("-webkit-transform", transform);
-        $element.css("transform", transform);
+            default:
+            case "css":
+                var transform = "translate(" + dx + "px, " + dy + "px)";
 
+                $element.css("-webkit-transform", transform);
+                $element.css("transform", transform);
+                break;
+        }
     }
 
     $element.bind("touchstart", onDragStart);

@@ -15,17 +15,18 @@
     $(function() {
       $("#container").mural({
         itemSelector: ".mural-item",
-        speed: 500
+        speed: 500,
+        animationType: "jquery"
       });
     });
   </script>
 </head>
 <body>
   <div id="container">
-    <div class="mural-item"></div>
-    <div class="mural-item"></div>
-    <div class="mural-item"></div>
-    <div class="mural-item"></div>
+    <div class="mural-item">A</div>
+    <div class="mural-item">B</div>
+    <div class="mural-item">C</div>
+    <div class="mural-item">D</div>
   </div>
 </body>
 </html>
