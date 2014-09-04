@@ -1,4 +1,4 @@
-var Item = function(el, id, animationType) {
+var Item = function(el, animationType) {
 	var moving = false,
         $ = window.jQuery,
         element = el,
@@ -14,8 +14,7 @@ var Item = function(el, id, animationType) {
 
     function onDragEnd() {
         if (moving) {
-            $element.trigger(Item.DRAG_END, id);
-            console.warn(id);
+            $element.trigger(Item.DRAG_END);
         }
         moving = false;
         $element.removeClass("active");

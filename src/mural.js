@@ -20,7 +20,7 @@
         var $items = $(settings.itemSelector);
 
         for (var i = 0; i < $items.length; i++) {
-            var item = new Item($items[i], i, settings.animationType);
+            var item = new Item($items[i], settings.animationType);
             items.push(item);
             item.getJQElement().bind(Item.DRAG_END, onDrop);
         }
@@ -83,9 +83,6 @@
                     var dragged = elementArray.indexOf($current[0]);
                     var dropped = elementArray.indexOf(items[i].getElement());
 
-                    console.log($current.html());
-                    console.log(dragged, dropped);
-
                     var n = 0;
                     if (dragged < dropped) {
                         if (orientation === "left") n = -1;
@@ -101,12 +98,6 @@
                 }
             }
         }
-
-        var debug = elementArray.map(function(el) {
-           return el.innerHTML;
-        });
-
-        console.log(debug);
 
         if (!hasMatch) {
             var pos = elementArray.indexOf($current[0]);
@@ -148,7 +139,7 @@
         hgap: 50,
         maxColumns: 5,
         shrinkOnResize: true,
-        onReshuffle: noop,
+        onReshuffle: noop, // this should return the item order
         animationType: "css" // options should be css, jquery, velocity or auto
     };
 
@@ -180,9 +171,9 @@
 
             if ($item[0].newT < 0) $item[0].newT = 0;
             if ($item[0].newL < 0) $item[0].newL = 0;
-
-            animateItems(items);
         }
+
+        animateItems(items);
     }
 
     function animateItems(items) {
@@ -238,6 +229,14 @@
                 }
             }
         }
+
+        if (settings.onReshuffle) {
+            setTimeout(function() {
+                settings.onReshuffle.call(this, items.map(function(el) {
+                    return el.getElement();
+                }));
+            }, settings.speed);
+        }
     }
 
     // Static method.
@@ -245,7 +244,7 @@
         // Override default options with passed-in options.
         options = $.extend({}, $.awesome.options, options);
         // Return something awesome.
-        return 'awesome' + options.punctuation;
+        return 'mural' + options.punctuation;
     };
 
     // Custom selector.

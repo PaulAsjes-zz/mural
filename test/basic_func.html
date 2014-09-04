@@ -16,7 +16,10 @@
       $("#container").mural({
         itemSelector: ".mural-item",
         speed: 500,
-        animationType: "jquery"
+        animationType: "jquery",
+        onReshuffle: function(items) {
+          console.log("reshuffled", items);
+        }
       });
     });
   </script>
