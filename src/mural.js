@@ -46,7 +46,8 @@
 
         var $items = $(settings.itemSelector);
 
-        $(".mural-item").velocity({width: 500}, 500);
+        // $(".mural-item").velocity({width: 500}, 500);
+        console.log($.velocity);
 
         for (var i = 0; i < $items.length; i++) {
             var item = new Item($items[i], settings.animationType);
