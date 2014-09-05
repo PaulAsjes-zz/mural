@@ -17,7 +17,36 @@
     $.fn.mural = function (options) {
         settings = $.extend({}, $.fn.mural.defaults, options);
 
+        // evaluate animation type and gracefully fallback in case the selected type isn't supported
+        switch (settings.animationType) {
+            case "css":
+                if ((IE !== undefined && IE < 10) || (!Detect.transform || !Detect.webkitTransform) ) {
+                    // fall back to jQuery
+                    settings.animationType = "jquery";
+                    console.log("CSS transform property not supported, falling back to jQuery animation");
+                    return;
+                }
+                break;
+
+            case "velocity":
+                break;
+
+            case "jquery":
+                break;
+
+            default:
+            case "auto":
+                /* TODO: auto detect which animation type to use in the following order:
+                * 1. Velocity
+                * 2. CSS
+                * 3. jQuery
+                */
+                break;
+        }
+
         var $items = $(settings.itemSelector);
+
+        $(".mural-item").velocity({width: 500}, 500);
 
         for (var i = 0; i < $items.length; i++) {
             var item = new Item($items[i], settings.animationType);
@@ -68,7 +97,7 @@
 
         var elementArray = items.map(function(el) {
             return el.getElement();
-        })
+        });
 
         for (var i = 0; i < items.length; i++) {
             if (e.currentTarget !== items[i].getElement()) {
@@ -195,34 +224,19 @@
                         // TODO: graceful fallback to CSS or jquery if velocity is not found
                         break;
 
-                    case "auto":
-                        /* TODO: auto detect which animation type to use in the following order:
-                        * 1. Velocity
-                        * 2. CSS
-                        * 3. jQuery
-                        */
-                        break;
-
                     default:
                     case "css":
                         // TODO: graceful fallback to jquery if browser can't handle CSS transitions. Throw error if CSS classes are not present
 
-                        if (IE !== undefined && IE < 10) {
-                            // fall back to jQuery
-                            settings.animationType = "jquery";
-                            animateItems(items);
-                            return;
-                        }
-
                         var transform = "translate(" + $item[0].newL + "px, " + $item[0].newT + "px)";
-                        $item.addClass("animate");
+                        $item.css("-webkit-transition", "-webkit-transform " + (settings.speed / 1000) + "s");
                         $item.css("-webkit-transform", transform);
                         $item.css("transform", transform);
 
                         // remove animate after complete
                         (function(index) {
                             setTimeout(function() {
-                                items[index].getJQElement().removeClass("animate");
+                                items[index].getJQElement().css("-webkit-transition", "");
                             }, settings.speed);
                         })(i);
                         break;

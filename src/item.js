@@ -38,9 +38,9 @@ var Item = function(el, animationType) {
 
     function setPosition(x, y) {
         // this might not be needed
-        var offset = {left: parseInt($element.css("left"), 10) || 0, top: parseInt($element.css("top"), 10) || 0};
-        var dx = (x - halfWidth) //- offset.left;
-        var dy = (y - halfHeight) //- offset.top;
+        //var offset = {left: parseInt($element.css("left"), 10) || 0, top: parseInt($element.css("top"), 10) || 0};
+        var dx = (x - halfWidth); //- offset.left;
+        var dy = (y - halfHeight); //- offset.top;
 
         switch (animationType) {
             case "velocity":
@@ -50,6 +50,11 @@ var Item = function(el, animationType) {
 
             default:
             case "css":
+                if (!Detect.transform || !Detect.webkitTransform) {
+                    animationType = "jquery";
+                    setPosition(x, y);
+                    return;
+                }
                 var transform = "translate(" + dx + "px, " + dy + "px)";
 
                 $element.css("-webkit-transform", transform);
@@ -73,7 +78,7 @@ var Item = function(el, animationType) {
     this.getJQElement = function() {
         return $element;
     };
-}
+};
 
 Item.DRAG_END = "dragend";
 Item.DRAG_START = "dragstart";

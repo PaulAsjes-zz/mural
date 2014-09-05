@@ -6,6 +6,8 @@
   <!-- Load local jQuery. -->
   <script src="../bower_components/jquery/dist/jquery.js"></script>
   <!-- Load local lib and tests. -->
+  <script src="../src/vendor/velocity.min.js"></script>
+  <script src="../src/detect.js"></script>
   <script src="../src/item.js"></script>
   <script src="../src/mural.js"></script>
   <script src="../src/overlap.js"></script>
@@ -16,9 +18,9 @@
       $("#container").mural({
         itemSelector: ".mural-item",
         speed: 500,
-        animationType: "jquery",
+        animationType: "css",
         onReshuffle: function(items) {
-          console.log("reshuffled", items);
+          // console.log("reshuffled", items);
         }
       });
     });
