@@ -6,7 +6,7 @@
   <!-- Load local jQuery. -->
   <script src="../bower_components/jquery/dist/jquery.js"></script>
   <!-- Load local lib and tests. -->
-  <script src="../src/velocity.min.js"></script>
+  <script src="../src/vendor/velocity.min.js"></script>
   <script src="../src/detect.js"></script>
   <script src="../src/item.js"></script>
   <script src="../src/mural.js"></script>
@@ -19,6 +19,7 @@
         itemSelector: ".mural-item",
         speed: 500,
         animationType: "css",
+        centered: true,
         onReshuffle: function(items) {
           // console.log("reshuffled", items);
         }
@@ -32,6 +33,11 @@
     <div class="mural-item">B</div>
     <div class="mural-item">C</div>
     <div class="mural-item">D</div>
+    <div class="mural-item">E</div>
+    <div class="mural-item">F</div>
+    <div class="mural-item">G</div>
+    <div class="mural-item">H</div>
+    <div class="mural-item">I</div>
   </div>
 </body>
 </html>

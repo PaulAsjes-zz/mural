@@ -14,8 +14,10 @@
         containerOffset,
         items = [];
     // Collection method.
-    $.fn.mural = function (options) {
+    $.fn.mural = function (options, foo) {
         settings = $.extend({}, $.fn.mural.defaults, options);
+
+        settings.container = this;
 
         // evaluate animation type and gracefully fallback in case the selected type isn't supported
         switch (settings.animationType) {
@@ -47,12 +49,11 @@
         var $items = $(settings.itemSelector);
 
         // $(".mural-item").velocity({width: 500}, 500);
-        console.log($.velocity);
 
         for (var i = 0; i < $items.length; i++) {
             var item = new Item($items[i], settings.animationType);
             items.push(item);
-            item.getJQElement().bind(Item.DRAG_END, onDrop);
+            item.getJQElement().bind(Item.DRAG_END, onDrop).css("position", "absolute");
         }
 
         containerOffset = this.offset();
@@ -91,6 +92,7 @@
         return undefined;
     })();
 
+    // TODO: Fix how drop works when only there is only one column
     function onDrop(e) {
         var $current = $(e.currentTarget);
 
@@ -170,20 +172,27 @@
         maxColumns: 5,
         shrinkOnResize: true,
         onReshuffle: noop, // this should return the item order
-        animationType: "css" // options should be css, jquery, velocity or auto
+        animationType: "css", // options should be css, jquery, velocity or auto
+        centered: true
     };
 
     function drawItems(items) {
-        var w = $(window).width();
+        var w = settings.container.width();
 
-        var columns = Math.floor(w / 200);
-        if (columns > settings.maxColumns && $(window).height() > 400) {
+        var iw = parseInt(items[0].getJQElement().css("width"), 10);
+
+        var maxwidth = iw + settings.wgap + (settings.wgap / items.length);
+        var columns = Math.floor(w / maxwidth);
+
+        if (columns > settings.maxColumns && settings.container.height() > 400) {
             columns = settings.maxColumns;
         } else if (columns < 1) {
             columns = 1;
         }
 
-        var offset = (w/2) - ((columns / 2) * 200);
+        if (columns > items.length) {
+            columns = items.length;
+        }
 
         for (var i = 0; i < items.length; i++) {
             var row = Math.floor(i / columns);
@@ -197,7 +206,13 @@
             var hgap = height + settings.hgap;
 
             $item[0].newT = containerOffset.top + (row * hgap);
-            $item[0].newL = Math.round(offset + containerOffset.left + (column * wgap));
+
+            var adjustment = 0;
+            if (settings.centered) {
+                var totalwidth = (columns * width) + (settings.wgap * (columns - 1));
+                adjustment = (w - totalwidth) / 2;
+            }
+            $item[0].newL = Math.round(containerOffset.left + adjustment + (column * wgap));
 
             if ($item[0].newT < 0) $item[0].newT = 0;
             if ($item[0].newL < 0) $item[0].newL = 0;
