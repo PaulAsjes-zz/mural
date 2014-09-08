@@ -53,6 +53,10 @@
      * 3. jQuery
      */
     function autoDetectAnimation(type) {
+        if (Detect.IE < 9) {
+            return "jquery";
+        }
+
         switch (type) {
             case "jquery":
                 return "jquery";
@@ -60,7 +64,7 @@
 
             default:
             case "css":
-                if (!Detect.transform || !Detect.webkitTransform) {
+                if (!Detect.transform || !Detect.webkitTransform || !Detect.msTransform) {
                     return "jquery";
                 }
                 return "css";
@@ -251,15 +255,8 @@
         }
     }
 
-    // Static method.
-    $.mural = function (options) {
-        // Override default options with passed-in options.
-        options = $.extend({}, $.awesome.options, options);
-        // Return something awesome.
-        return 'mural' + options.punctuation;
-    };
 
-    $.mural.setOrder = function(order) {
+    $.setOrder = function(order) {
         console.log("set");
     };
 

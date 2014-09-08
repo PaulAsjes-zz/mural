@@ -1,7 +1,7 @@
 // CSS support detection. Taken from here: http://www.sitepoint.com/detect-css3-property-browser-support/
 var Detect = (function() {
 
-	var	props = "transition,transform,webkitTransition,webkitTransform".split(","),
+	var	props = "transition,transform,webkitTransition,webkitTransform,msTransform".split(","),
 		CSSprefix = "Webkit,Moz,O,ms,Khtml".split(","),
 		d = document.createElement("detect"),
 		test = [],

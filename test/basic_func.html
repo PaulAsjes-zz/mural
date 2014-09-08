@@ -16,12 +16,12 @@
     $(function() {
       // grab saved order from cookie, if available. Cookies are outside of the scope of mural, so has to be done outside the plugin.
       // var order = [];
-      // $.mural.setOrder(order);
+      $.mural.setOrder(order);
 
       $("#container").mural({
         itemSelector: ".mural-item",
         speed: 500,
-        animationType: "velocity",
+        animationType: "css",
         centered: true,
         onReshuffle: function(items) {
           // save order in a cookie perhaps?
