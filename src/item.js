@@ -43,6 +43,7 @@ var Item = function(el, animationType) {
         var dy = (y - halfHeight); //- offset.top;
 
         switch (animationType) {
+            // these are the same as we're not actually animating
             case "velocity":
             case "jquery":
                 $element.offset({left: dx, top: dy});

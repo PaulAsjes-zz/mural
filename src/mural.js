@@ -20,35 +20,9 @@
         settings.container = this;
 
         // evaluate animation type and gracefully fallback in case the selected type isn't supported
-        switch (settings.animationType) {
-            case "css":
-                if ((IE !== undefined && IE < 10) || (!Detect.transform || !Detect.webkitTransform) ) {
-                    // fall back to jQuery
-                    settings.animationType = "jquery";
-                    console.log("CSS transform property not supported, falling back to jQuery animation");
-                    return;
-                }
-                break;
-
-            case "velocity":
-                break;
-
-            case "jquery":
-                break;
-
-            default:
-            case "auto":
-                /* TODO: auto detect which animation type to use in the following order:
-                * 1. Velocity
-                * 2. CSS
-                * 3. jQuery
-                */
-                break;
-        }
+        settings.animationType = autoDetectAnimation(settings.animationType);
 
         var $items = $(settings.itemSelector);
-
-        // $(".mural-item").velocity({width: 500}, 500);
 
         for (var i = 0; i < $items.length; i++) {
             var item = new Item($items[i], settings.animationType);
@@ -71,26 +45,35 @@
         return this;
     };
 
-    /* IE detection. Gist: https://gist.github.com/julianshapiro/9098609 */
-    var IE = (function() {
-        if (document.documentMode) {
-            return document.documentMode;
-        } else {
-            for (var i = 10; i > 4; i--) {
-                var div = document.createElement("div");
 
-                div.innerHTML = "<!--[if IE " + i + "]><span></span><![endif]-->";
+    /*
+     * Auto detect which animation type to use in the following order:
+     * 1. Velocity
+     * 2. CSS
+     * 3. jQuery
+     */
+    function autoDetectAnimation(type) {
+        switch (type) {
+            case "jquery":
+                return "jquery";
+                break;
 
-                if (div.getElementsByTagName("span").length) {
-                    div = null;
-
-                    return i;
+            default:
+            case "css":
+                if (!Detect.transform || !Detect.webkitTransform) {
+                    return "jquery";
                 }
-            }
-        }
+                return "css";
+                break;
 
-        return undefined;
-    })();
+            case "velocity":
+                if ($.Velocity !== undefined) {
+                   return "velocity";
+                }
+                autoDetectAnimation("css");
+                break;
+        }
+    }
 
     // TODO: Fix how drop works when only there is only one column
     function onDrop(e) {
@@ -238,12 +221,11 @@
 
                     case "velocity":
                         // TODO: graceful fallback to CSS or jquery if velocity is not found
+                        $item.velocity({"top": $item[0].newT, "left": $item[0].newL}, 100 + t);
                         break;
 
                     default:
                     case "css":
-                        // TODO: graceful fallback to jquery if browser can't handle CSS transitions. Throw error if CSS classes are not present
-
                         var transform = "translate(" + $item[0].newL + "px, " + $item[0].newT + "px)";
                         $item.css("-webkit-transition", "-webkit-transform " + (settings.speed / 1000) + "s");
                         $item.css("-webkit-transform", transform);
@@ -275,6 +257,10 @@
         options = $.extend({}, $.awesome.options, options);
         // Return something awesome.
         return 'mural' + options.punctuation;
+    };
+
+    $.mural.setOrder = function(order) {
+        console.log("set");
     };
 
     // Custom selector.
