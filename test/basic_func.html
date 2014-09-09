@@ -15,10 +15,11 @@
   <script>
     $(function() {
       // grab saved order from cookie, if available. Cookies are outside of the scope of mural, so has to be done outside the plugin.
-      // var order = [];
-      $.mural.setOrder(order);
+      var itemOrder = $(".mural-item").toArray();
+      itemOrder.reverse();
 
       $("#container").mural({
+        order: itemOrder,
         itemSelector: ".mural-item",
         speed: 500,
         animationType: "css",

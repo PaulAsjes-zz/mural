@@ -14,7 +14,7 @@
         containerOffset,
         items = [];
     // Collection method.
-    $.fn.mural = function (options, foo) {
+    $.fn.mural = function (options) {
         settings = $.extend({}, $.fn.mural.defaults, options);
 
         settings.container = this;
@@ -22,7 +22,9 @@
         // evaluate animation type and gracefully fallback in case the selected type isn't supported
         settings.animationType = autoDetectAnimation(settings.animationType);
 
-        var $items = $(settings.itemSelector);
+        console.log(settings.animationType);
+
+        var $items = settings.order || $(settings.itemSelector);
 
         for (var i = 0; i < $items.length; i++) {
             var item = new Item($items[i], settings.animationType);
@@ -45,7 +47,6 @@
         return this;
     };
 
-
     /*
      * Auto detect which animation type to use in the following order:
      * 1. Velocity
@@ -64,7 +65,7 @@
 
             default:
             case "css":
-                if (!Detect.transform || !Detect.webkitTransform || !Detect.msTransform) {
+                if (!!(Detect.transform && Detect.webkitTransform && Detect.msTransform)) {
                     return "jquery";
                 }
                 return "css";
@@ -160,7 +161,8 @@
         shrinkOnResize: true,
         onReshuffle: noop, // this should return the item order
         animationType: "css", // options should be css, jquery, velocity or auto
-        centered: true
+        centered: true,
+        order: null
     };
 
     function drawItems(items) {
@@ -254,11 +256,6 @@
             }, settings.speed);
         }
     }
-
-
-    $.setOrder = function(order) {
-        console.log("set");
-    };
 
     // Custom selector.
     $.expr[':'].mural = function (elem) {
