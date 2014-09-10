@@ -5,7 +5,7 @@
   <title>Mural Test Suite</title>
   <!-- Load local jQuery. -->
   <script src="../bower_components/jquery/dist/jquery.js"></script>
-  <script src="../bower_components/velocity/velocity.js"></script>
+  <!-- // <script src="../bower_components/velocity/velocity.js"></script> -->
   <!-- Load local lib and tests. -->
   <script src="../src/detect.js"></script>
   <script src="../src/item.js"></script>
@@ -22,7 +22,7 @@
         order: itemOrder,
         itemSelector: ".mural-item",
         speed: 500,
-        animationType: "css",
+        animationType: "auto",
         centered: true,
         onReshuffle: function(items) {
           // save order in a cookie perhaps?

@@ -63,7 +63,6 @@
                 return "jquery";
                 break;
 
-            default:
             case "css":
                 if (!!(Detect.transform && Detect.webkitTransform && Detect.msTransform)) {
                     return "jquery";
@@ -71,11 +70,12 @@
                 return "css";
                 break;
 
+            default:
             case "velocity":
                 if ($.Velocity !== undefined) {
                    return "velocity";
                 }
-                autoDetectAnimation("css");
+                return autoDetectAnimation("css");
                 break;
         }
     }
