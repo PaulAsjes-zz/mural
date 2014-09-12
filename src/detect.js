@@ -30,6 +30,11 @@ var Detect = (function() {
 
 Detect.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
+Detect.isFF     = ('MozAppearance' in document.documentElement.style || typeof InstallTrigger !== 'undefined') ? true : false;
+Detect.isOpera  = (!!window.opera || /opera|opr/i.test(navigator.userAgent)) ? true : false;
+Detect.isSafari = (/constructor/i.test(window.HTMLElement)) ? true : false;
+Detect.isChrome = (!!window.chrome && !!window.chrome.webstore) ? true : false;
+
 /* IE detection. Gist: https://gist.github.com/julianshapiro/9098609 */
 Detect.IE = (function() {
     if (document.documentMode) {

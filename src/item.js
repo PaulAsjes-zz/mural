@@ -7,7 +7,7 @@ var Item = function(el, animationType) {
 		halfHeight = $element.height() / 2;
 
     function onDragStart(e) {
-        $element.addClass("active");
+        $element.css("z-index", 10);
         moving = true;
         e.preventDefault();
     }
@@ -17,7 +17,7 @@ var Item = function(el, animationType) {
             $element.trigger(Item.DRAG_END);
         }
         moving = false;
-        $element.removeClass("active");
+        $element.css("z-index", 1);
     }
 
     function onMove(e) {
@@ -38,7 +38,8 @@ var Item = function(el, animationType) {
 
     function setPosition(x, y) {
         // this might not be needed
-        //var offset = {left: parseInt($element.css("left"), 10) || 0, top: parseInt($element.css("top"), 10) || 0};
+        // var offset = {left: parseInt($element.css("left"), 10) || 0, top: parseInt($element.css("top"), 10) || 0};
+
         var dx = (x - halfWidth); //- offset.left;
         var dy = (y - halfHeight); //- offset.top;
 
@@ -53,8 +54,7 @@ var Item = function(el, animationType) {
             case "css":
                 if (!Detect.transform || !Detect.webkitTransform) {
                     animationType = "jquery";
-                    setPosition(x, y);
-                    return;
+                    return setPosition(x, y);
                 }
                 var transform = "translate(" + dx + "px, " + dy + "px)";
 

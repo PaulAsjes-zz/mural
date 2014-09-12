@@ -22,8 +22,6 @@
         // evaluate animation type and gracefully fallback in case the selected type isn't supported
         settings.animationType = autoDetectAnimation(settings.animationType);
 
-        console.log(settings.animationType);
-
         var $items = settings.order || $(settings.itemSelector);
 
         for (var i = 0; i < $items.length; i++) {
@@ -47,7 +45,7 @@
         return this;
     };
 
-    /*
+    /**
      * Auto detect which animation type to use in the following order:
      * 1. Velocity
      * 2. CSS
@@ -226,7 +224,6 @@
                         break;
 
                     case "velocity":
-                        // TODO: graceful fallback to CSS or jquery if velocity is not found
                         $item.velocity({"top": $item[0].newT, "left": $item[0].newL}, 100 + t);
                         break;
 
