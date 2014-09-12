@@ -25,7 +25,7 @@
         var $items = settings.order || $(settings.itemSelector);
 
         for (var i = 0; i < $items.length; i++) {
-            var item = new Item($items[i], settings.animationType);
+            var item = new Item($items[i], settings.animationType, settings.activeCSS);
             items.push(item);
             item.getJQElement().bind(Item.DRAG_END, onDrop).css("position", "absolute");
         }
@@ -160,6 +160,7 @@
         onReshuffle: noop, // this should return the item order
         animationType: "css", // options should be css, jquery, velocity or auto
         centered: true,
+        activeCSS: "",
         order: null
     };
 
@@ -212,6 +213,7 @@
         for (var i = 0; i < items.length; i++) {
             var $item = items[i].getJQElement();
             var o = $item.position();
+            var parentOffset = $item.parent().offset();
 
             // Only animate if there is a change in position
             if (o.top !== $item[0].newT || o.left !== $item[0].newL) {
@@ -229,6 +231,8 @@
 
                     default:
                     case "css":
+                        $item[0].newL -= parentOffset.left;
+                        $item[0].newT -= parentOffset.top;
                         var transform = "translate(" + $item[0].newL + "px, " + $item[0].newT + "px)";
                         $item.css("-webkit-transition", "-webkit-transform " + (settings.speed / 1000) + "s");
                         $item.css("-webkit-transform", transform);

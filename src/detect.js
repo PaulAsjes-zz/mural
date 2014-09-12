@@ -25,7 +25,6 @@ var Detect = (function() {
 	}
 
 	return test;
-
 }());
 
 Detect.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -53,5 +52,5 @@ Detect.IE = (function() {
         }
     }
 
-    return undefined;
+    return void 0;
 })();

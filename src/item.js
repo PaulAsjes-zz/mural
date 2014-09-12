@@ -1,4 +1,4 @@
-var Item = function(el, animationType) {
+var Item = function(el, animationType, activeClass) {
 	var moving = false,
         $ = window.jQuery,
         element = el,
@@ -8,6 +8,7 @@ var Item = function(el, animationType) {
 
     function onDragStart(e) {
         $element.css("z-index", 10);
+        if (activeClass) $element.addClass(activeClass);
         moving = true;
         e.preventDefault();
     }
@@ -18,6 +19,7 @@ var Item = function(el, animationType) {
         }
         moving = false;
         $element.css("z-index", 1);
+        if (activeClass) $element.removeClass(activeClass);
     }
 
     function onMove(e) {
@@ -38,10 +40,10 @@ var Item = function(el, animationType) {
 
     function setPosition(x, y) {
         // this might not be needed
-        // var offset = {left: parseInt($element.css("left"), 10) || 0, top: parseInt($element.css("top"), 10) || 0};
+        var offset = $element.parent().offset();
 
-        var dx = (x - halfWidth); //- offset.left;
-        var dy = (y - halfHeight); //- offset.top;
+        var dx = (x - halfWidth);
+        var dy = (y - halfHeight);
 
         switch (animationType) {
             // these are the same as we're not actually animating
@@ -56,6 +58,8 @@ var Item = function(el, animationType) {
                     animationType = "jquery";
                     return setPosition(x, y);
                 }
+                dx -= offset.left;
+                dy -= offset.top;
                 var transform = "translate(" + dx + "px, " + dy + "px)";
 
                 $element.css("-webkit-transform", transform);
