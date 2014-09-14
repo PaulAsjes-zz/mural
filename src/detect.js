@@ -52,5 +52,5 @@ Detect.IE = (function() {
         }
     }
 
-    return void 0;
+    return undefined;
 })();

@@ -21,8 +21,14 @@
 
         // evaluate animation type and gracefully fallback in case the selected type isn't supported
         settings.animationType = autoDetectAnimation(settings.animationType);
+        var order = null;
+        if ($.isPlainObject(settings.order)) {
+            order = settings.order.data.map(function(el) {
+                return $("[" + settings.order.attribute + "|=" + el).get(0);
+            });
+        }
 
-        var $items = settings.order || $(settings.itemSelector);
+        var $items = order || $(settings.itemSelector);
 
         for (var i = 0; i < $items.length; i++) {
             var item = new Item($items[i], settings.animationType, settings.activeCSS);
@@ -155,10 +161,10 @@
         speed: 500,
         wgap: 50,
         hgap: 50,
-        maxColumns: 5,
+        maxColumns: Infinity,
         shrinkOnResize: true,
         onReshuffle: noop, // this should return the item order
-        animationType: "css", // options should be css, jquery, velocity or auto
+        animationType: "auto", // options should be css, jquery, velocity or auto
         centered: true,
         activeCSS: "",
         order: null
@@ -172,7 +178,7 @@
         var maxwidth = iw + settings.wgap + (settings.wgap / items.length);
         var columns = Math.floor(w / maxwidth);
 
-        if (columns > settings.maxColumns && settings.container.height() > 400) {
+        if (columns > settings.maxColumns) {
             columns = settings.maxColumns;
         } else if (columns < 1) {
             columns = 1;
@@ -222,11 +228,11 @@
                 switch (settings.animationType) {
                     case "jquery":
                         $item.stop(true, false);
-                        $item.animate({"top": $item[0].newT, "left": $item[0].newL}, 100 + t);
+                        $item.animate({"top": $item[0].newT, "left": $item[0].newL}, settings.speed);
                         break;
 
                     case "velocity":
-                        $item.velocity({"top": $item[0].newT, "left": $item[0].newL}, 100 + t);
+                        $item.velocity({"top": $item[0].newT, "left": $item[0].newL}, settings.speed);
                         break;
 
                     default:
