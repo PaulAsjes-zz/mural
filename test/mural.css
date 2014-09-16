@@ -20,6 +20,7 @@ html, body {
   height: 100px;
   outline: none;
   user-select: none;
+  text-align: center;
   z-index: 1;
 
   will-change: transform;

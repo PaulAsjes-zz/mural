@@ -1,10 +1,13 @@
-var Item = function(el, animationType, activeClass) {
+var Item = function(el, settings) {
 	var moving = false,
         $ = window.jQuery,
         element = el,
 		$element = $(element),
 		halfWidth = $element.width() / 2,
-		halfHeight = $element.height() / 2;
+		halfHeight = $element.height() / 2,
+        animationType = settings.animationType,
+        activeClass = settings.activeCSS,
+        draggable = settings.draggable;
 
     function onDragStart(e) {
         $element.css("z-index", 10);
@@ -68,13 +71,15 @@ var Item = function(el, animationType, activeClass) {
         }
     }
 
-    $element.bind("touchstart", onDragStart);
-    $element.bind("touchend", onDragEnd);
-    $element.bind("touchmove", onMove);
+    if (draggable) {
+        $element.bind("touchstart", onDragStart);
+        $element.bind("touchend", onDragEnd);
+        $element.bind("touchmove", onMove);
 
-    $element.bind("mousedown", onDragStart);
-    window.document.addEventListener("mouseup", onDragEnd);
-    window.document.addEventListener("mousemove", onMove);
+        $element.bind("mousedown", onDragStart);
+        window.document.addEventListener("mouseup", onDragEnd);
+        window.document.addEventListener("mousemove", onMove);
+    }
 
     this.getElement = function() {
         return element;

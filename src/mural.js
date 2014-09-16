@@ -31,7 +31,7 @@
         var $items = order || $(settings.itemSelector);
 
         for (var i = 0; i < $items.length; i++) {
-            var item = new Item($items[i], settings.animationType, settings.activeCSS);
+            var item = new Item($items[i], settings);
             items.push(item);
             item.getJQElement().bind(Item.DRAG_END, onDrop).css("position", "absolute");
         }
@@ -58,10 +58,6 @@
      * 3. jQuery
      */
     function autoDetectAnimation(type) {
-        if (Detect.IE < 9) {
-            return "jquery";
-        }
-
         switch (type) {
             case "jquery":
                 return "jquery";
@@ -162,12 +158,14 @@
         wgap: 50,
         hgap: 50,
         maxColumns: Infinity,
+        minColumns: 1,
         shrinkOnResize: true,
         onReshuffle: noop, // this should return the item order
         animationType: "auto", // options should be css, jquery, velocity or auto
         centered: true,
         activeCSS: "",
-        order: null
+        order: null,
+        draggable: true
     };
 
     function drawItems(items) {
