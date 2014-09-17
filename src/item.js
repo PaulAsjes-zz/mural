@@ -72,10 +72,6 @@ var Item = function(el, settings) {
     }
 
     if (draggable) {
-        $element.bind("touchstart", onDragStart);
-        $element.bind("touchend", onDragEnd);
-        $element.bind("touchmove", onMove);
-
         element.addEventListener("touchstart", onDragStart);
         element.addEventListener("touchend", onDragEnd);
         element.addEventListener("touchmove", onMove);
