@@ -13,6 +13,7 @@
         settings = {},
         containerOffset,
         items = [];
+
     // Collection method.
     $.fn.mural = function (options) {
         settings = $.extend({}, $.fn.mural.defaults, options);
@@ -23,9 +24,11 @@
         settings.animationType = autoDetectAnimation(settings.animationType);
         var order = null;
         if ($.isPlainObject(settings.order)) {
-            order = settings.order.data.map(function(el) {
-                return $("[" + settings.order.attribute + "|=" + el).get(0);
-            });
+            if (settings.order.data) {
+                order = settings.order.data.map(function(id) {
+                    return $("[" + settings.order.attribute + "|=" + id).get(0);
+                });
+            }
         }
 
         var $items = order || $(settings.itemSelector);

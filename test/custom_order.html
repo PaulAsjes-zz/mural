@@ -7,7 +7,7 @@
   <script src="../bower_components/jquery/dist/jquery.js"></script>
   <script src="../bower_components/velocity/velocity.js"></script>
   <!-- Load local lib and tests. -->
-  <<script src="../src/detect.js"></script>
+  <script src="../src/detect.js"></script>
   <script src="../src/item.js"></script>
   <script src="../src/mural.js"></script>
   <script src="../src/overlap.js"></script>
@@ -39,11 +39,12 @@
 
       // grab saved order from cookie, if available. Cookies are outside of the scope of mural, so has to be done outside the plugin.
       var itemOrder = readCookie("item-order") || "";
+      if (itemOrder.length > 0 ) itemOrder = itemOrder.split(",");
 
      $("#container").mural({
         order: {
           attribute: "id",
-          data: itemOrder.split(",")
+          data: itemOrder
         },
         itemSelector: ".mural-item",
         speed: 500,
