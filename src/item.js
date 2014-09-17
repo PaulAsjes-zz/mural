@@ -76,7 +76,11 @@ var Item = function(el, settings) {
         $element.bind("touchend", onDragEnd);
         $element.bind("touchmove", onMove);
 
-        $element.bind("mousedown", onDragStart);
+        element.addEventListener("touchstart", onDragStart);
+        element.addEventListener("touchend", onDragEnd);
+        element.addEventListener("touchmove", onMove);
+
+        element.addEventListener("mousedown", onDragStart);
         window.document.addEventListener("mouseup", onDragEnd);
         window.document.addEventListener("mousemove", onMove);
     }

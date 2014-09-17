@@ -17,7 +17,9 @@ In your web page:
 <script>
 jQuery(function($) {
   $("#container").mural({
-  	itemSelector: ".mural-item"
+  	// options...
+  	itemSelector: ".mural-item",
+  	speed: 250
   });
 });
 </script>
