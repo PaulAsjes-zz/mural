@@ -1,4 +1,6 @@
 var Item = function(el, settings) {
+    "use-strict";
+
 	var moving = false,
         $ = window.jQuery,
         element = el,

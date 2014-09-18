@@ -40,7 +40,7 @@
       // grab saved order from cookie, if available. Cookies are outside of the scope of mural, so has to be done outside the plugin.
       var itemOrder = readCookie("item-order") || "";
       if (itemOrder.length > 0 ) itemOrder = itemOrder.split(",");
-
+      console.log(itemOrder);
      $("#container").mural({
         order: {
           attribute: "id",
