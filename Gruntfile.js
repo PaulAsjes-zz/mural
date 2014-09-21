@@ -1,91 +1,91 @@
-'use strict';
+"use strict";
 
 module.exports = function (grunt) {
   // Load all grunt tasks
-  require('load-grunt-tasks')(grunt);
+  require("load-grunt-tasks")(grunt);
   // Show elapsed time at the end
-  require('time-grunt')(grunt);
+  require("time-grunt")(grunt);
 
   // Project configuration.
   grunt.initConfig({
     // Metadata.
-    pkg: grunt.file.readJSON('package.json'),
-    banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-      '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-      '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
-      '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-      ' Licensed MIT */\n',
+    pkg: grunt.file.readJSON("package.json"),
+    banner: "/*! <%= pkg.name %> - v<%= pkg.version %> - " +
+      "<%= grunt.template.today('yyyy-mm-dd') %>\n" +
+      "<%= pkg.homepage ? '* ' + pkg.homepage + '\\n' : '' %>" +
+      "* Copyright (c) <%= grunt.template.today('yyyy') %> <%= pkg.author.name %>;" +
+      " Licensed MIT */\n",
     // Task configuration.
     clean: {
-      files: ['dist']
+      files: ["dist"]
     },
     concat: {
       options: {
-        banner: '<%= banner %>',
+        banner: "<%= banner %>",
         stripBanners: true
       },
       dist: {
-        src: ['src/*.js'],
-        dest: 'dist/jquery.<%= pkg.name %>.js'
+        src: ["src/*.js"],
+        dest: "dist/jquery.<%= pkg.name %>.js"
       }
     },
     uglify: {
       options: {
-        banner: '<%= banner %>'
+        banner: "<%= banner %>"
       },
       dist: {
-        src: '<%= concat.dist.dest %>',
-        dest: 'dist/jquery.<%= pkg.name %>.min.js'
+        src: "<%= concat.dist.dest %>",
+        dest: "dist/jquery.<%= pkg.name %>.min.js"
       }
     },
     qunit: {
       all: {
         options: {
-          urls: ['http://localhost:9000/test/<%= pkg.name %>.html']
+          urls: ["http://localhost:9000/test/<%= pkg.name %>.html"]
         }
       }
     },
     jshint: {
       options: {
-        reporter: require('jshint-stylish')
+        reporter: require("jshint-stylish")
       },
       gruntfile: {
         options: {
-          jshintrc: '.jshintrc'
+          jshintrc: ".jshintrc"
         },
-        src: 'Gruntfile.js'
+        src: "Gruntfile.js"
       },
       src: {
         options: {
-          jshintrc: 'src/.jshintrc'
+          jshintrc: "src/.jshintrc"
         },
-        src: ['src/**/*.js']
+        src: ["src/**/*.js"]
       },
       test: {
         options: {
-          jshintrc: 'test/.jshintrc'
+          jshintrc: "test/.jshintrc"
         },
-        src: ['test/**/*.js']
+        src: ["test/**/*.js"]
       }
     },
     watch: {
       gruntfile: {
-        files: '<%= jshint.gruntfile.src %>',
-        tasks: ['jshint:gruntfile']
+        files: "<%= jshint.gruntfile.src %>",
+        tasks: ["jshint:gruntfile"]
       },
       src: {
-        files: '<%= jshint.src.src %>',
-        tasks: ['jshint:src', 'concat:dist']
+        files: "<%= jshint.src.src %>",
+        tasks: ["jshint:src", "concat:dist"]
       },
       test: {
-        files: '<%= jshint.test.src %>',
-        tasks: ['jshint:test', 'qunit']
+        files: "<%= jshint.test.src %>",
+        tasks: ["jshint:test", "qunit"]
       }
     },
     connect: {
       server: {
         options: {
-          hostname: '*',
+          hostname: "*",
           port: 7000
         }
       }
@@ -104,11 +104,11 @@ module.exports = function (grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'connect', 'qunit', 'clean', 'concat', 'uglify']);
-  grunt.registerTask('server', function () {
-    grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
-    grunt.task.run(['serve']);
+  grunt.registerTask("default", ["jshint", "connect", "qunit", "clean", "concat", "uglify"]);
+  grunt.registerTask("server", function () {
+    grunt.log.warn("The `server` task has been deprecated. Use `grunt serve` to start a server.");
+    grunt.task.run(["serve"]);
   });
-  grunt.registerTask('serve', ['connect', 'watch']);
-  grunt.registerTask('test', ['jshint', 'connect', 'qunit']);
+  grunt.registerTask("serve", ["connect", "watch"]);
+  grunt.registerTask("test", ["jshint", "connect", "qunit"]);
 };

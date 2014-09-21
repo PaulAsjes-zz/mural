@@ -224,7 +224,6 @@
 
             // Only animate if there is a change in position
             if (o.top !== $item[0].newT || o.left !== $item[0].newL) {
-                var t = (i * 60 > 900) ? 900 : i * 60;
 
                 switch (settings.animationType) {
                     case "jquery":

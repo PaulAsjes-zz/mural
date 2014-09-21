@@ -5,7 +5,6 @@
   <title>Mural Test Suite</title>
   <!-- Load local jQuery. -->
   <script src="../src/jquery.min.js"></script>
-
   <script src="../src/jquery.mural.min.js"></script>
   <link rel="stylesheet" href="mural.css">
   <script>
@@ -31,13 +30,20 @@
         return null;
       }
 
+      function eraseCookie(name) {
+          createCookie(name, "", -1);
+      }
+
       // grab saved order from cookie, if available. Cookies are outside of the scope of mural, so has to be done outside the plugin.
       var itemOrder = readCookie("item-order") || "";
+      if (itemOrder.length > 0 ) itemOrder = itemOrder.split(",");
+      console.log(itemOrder);
+      eraseCookie("item-order");
 
      $("#container").mural({
         order: {
           attribute: "id",
-          data: itemOrder.split(",")
+          data: itemOrder
         },
         itemSelector: ".mural-item",
         speed: 500,
