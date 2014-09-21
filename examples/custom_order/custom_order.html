@@ -37,7 +37,6 @@
       // grab saved order from cookie, if available. Cookies are outside of the scope of mural, so has to be done outside the plugin.
       var itemOrder = readCookie("item-order") || "";
       if (itemOrder.length > 0 ) itemOrder = itemOrder.split(",");
-      console.log(itemOrder);
       eraseCookie("item-order");
 
      $("#container").mural({
@@ -62,7 +61,10 @@
   </script>
 </head>
 <body>
-  <p>Basic functionality test</p>
+  <center>
+    <p>Basic functionality demo.</p>
+    <p>Drag and drop to reorganise, refresh page to see new order saved. Resize the window to see auto realigning.</p>
+  </center>
   <div id="container">
     <div class="mural-item" id="A">A</div>
     <div class="mural-item" id="B">B</div>
