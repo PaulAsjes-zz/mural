@@ -22,6 +22,7 @@
 
         // evaluate animation type and gracefully fallback in case the selected type isn't supported
         settings.animationType = autoDetectAnimation(settings.animationType);
+
         var order = null;
         if ($.isPlainObject(settings.order)) {
             if (settings.order.data) {
@@ -39,7 +40,8 @@
             item.getJQElement().bind(Item.DRAG_END, onDrop).css("position", "absolute");
         }
 
-        containerOffset = this.offset();
+        settings.container = this;
+        settings.containerOffset = this.offset();
 
         var delay;
         $(window).resize(function() {
@@ -95,7 +97,7 @@
 
         for (var i = 0; i < items.length; i++) {
             if (e.currentTarget !== items[i].getElement()) {
-                if (overlaps($current[0], items[i].getElement(), false, containerOffset)) {
+                if (overlaps($current[0], items[i].getElement(), false, settings.containerOffset)) {
                     var midpoint = {};
                     var o = $current.offset();
                     midpoint.x = ($current.width() / 2) + o.left;
@@ -137,7 +139,7 @@
 
     function getPosInRelation(pos, $item)
     {
-        var mx = pos.x - containerOffset.left,
+        var mx = pos.x - settings.containerOffset.left,
             tw = $item.width() / 2,
             tp = $item.position(),
             mp = tp.left + tw;
@@ -175,6 +177,8 @@
 
         var iw = parseInt(items[0].getJQElement().css("width"), 10);
 
+        settings.containerOffset = settings.container.offset();
+
         var maxwidth = iw + settings.wgap + (settings.wgap / items.length);
         var columns = Math.floor(w / maxwidth);
 
@@ -199,14 +203,14 @@
             var wgap = width + settings.wgap;
             var hgap = height + settings.hgap;
 
-            $item[0].newT = containerOffset.top + (row * hgap);
+            $item[0].newT = settings.containerOffset.top + (row * hgap);
 
             var adjustment = 0;
             if (settings.centered) {
                 var totalwidth = (columns * width) + (settings.wgap * (columns - 1));
                 adjustment = (w - totalwidth) / 2;
             }
-            $item[0].newL = Math.round(containerOffset.left + adjustment + (column * wgap));
+            $item[0].newL = Math.round(settings.containerOffset.left + adjustment + (column * wgap));
 
             if ($item[0].newT < 0) $item[0].newT = 0;
             if ($item[0].newL < 0) $item[0].newL = 0;

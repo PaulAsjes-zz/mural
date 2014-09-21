@@ -31,11 +31,11 @@ html, body {
   -webkit-user-select: none;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
 
-   -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
-  transition: transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
-
   -webkit-backface-visibility: hidden;
   will-change: transform;
+
+  -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+  transition: transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
 }
 
 .mural-item.active {
