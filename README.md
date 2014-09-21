@@ -36,8 +36,8 @@ jQuery(function($) {
 | hgap | `Number` | `50` | Vertical gap between items in pixels. |
 | maxColumns | `Number` | `infinity` | Maximum amount of columns Mural will render. |
 | minColumns | `Number` | `1` | Minimum amount of columns Mural will render. |
-| onReshuffle | `Function` | Callback function when items have reshuffled. Returns the list of HTML elements in the order displayed on screen. See the examples for more information. |
-| animationType | `String` | `"auto"` | Which animation library to use. Options include "jQuery" for the standard jQuery animation library, "CSS" for CSS3 transitions and "velocity" for the Velocity animation library. Default is "auto" which attempts to automatically select the animation type dependant on available libraries. Mural will gracefully degrade to using jQuery if either Velocity or CSS is specified yet unavailable. |
+| onReshuffle | `Function` | `noop` |Callback function when items have reshuffled. Returns the list of HTML elements in the order displayed on screen. See the examples for more information. |
+| animationType | `String` | `"auto"` | Which animation library to use. Options include `"jquery"` for the standard jQuery animation library, `"css"` for CSS3 transitions and `"velocity"` for the Velocity animation library. Default is `"auto"` which attempts to automatically select the animation type dependant on available libraries. Mural will gracefully degrade to using jQuery if either Velocity or CSS is specified yet unavailable. |
 | centered | `Boolean` | `true` | Whether the items will be rendered in the centre of the parent div. |
 | activeCSS | `String` | `""` | CSS class to be assigned to the items when dragging. Useful if you want some effects like box shadowing when item is active. |
 | order | `Object` | `null` | Custom order of the items. use `onReshuffle` to save the item list and `order` to display the items in the desired way. See the examples on usage. |

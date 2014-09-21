@@ -155,7 +155,6 @@
 
     // Static method default options.
     $.fn.mural.defaults = {
-        cols: 5,
         itemSelector: ".mural-item",
         speed: 500,
         wgap: 50,
