@@ -2,6 +2,8 @@
 
 Customisable tiled presentation jQuery plugin. Items will automatically realign to appropriate columns based on browser size. Drag and drop to change order.
 
+[See a demo here](http://internetjones.net/mural/examples/basic/)
+
 ## Getting Started
 
 Download the [production version][min] or the [development version][max].
