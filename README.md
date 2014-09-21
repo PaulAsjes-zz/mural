@@ -46,7 +46,43 @@ jQuery(function($) {
 | draggable | `Boolean` | `true` | Whether the item can be dragged and dropped or not. |
 
 ## Examples
-_(Coming soon)_
 
-## Release History
-_(Nothing yet)_
+# Mural with some restrictions
+```
+$("#container").mural({
+	itemSelector: ".mural-item",
+	speed: 1000,
+	animationType: "css",
+	maxColumns: 4,
+	minColumns: 2,
+	centered: false,
+	activeCSS: "your-css-class-here",
+	onReshuffle: function(items) {
+    	// do stuff...
+	}
+});
+```
+
+# Custom order via cookies
+```
+var itemOrder = readCookie("item-order");
+
+$("#container").mural({
+   order: {
+   	 // attribute with which to identify the unique item
+     attribute: "id",
+     // array of the unique IDs in the desired order
+     data: itemOrder
+   },
+   itemSelector: ".mural-item",
+   animationType: "auto",
+   onReshuffle: function(items) {
+     // extract a unique identifier for each item so we can store it in an array
+     var itemIDs = items.map(function(e) {
+       return e.getAttribute("id");
+     });
+     // save the order in a cookie
+     createCookie("item-order", itemIDs.join(","), 10);
+   }
+ });
+```
