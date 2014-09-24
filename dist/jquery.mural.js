@@ -1,11 +1,132 @@
-/*
- * Mural
- *
- *
- * Copyright (c) 2014 Paul Asjes
- * Licensed under the MIT license.
- */
+/*! mural - v0.0.1 - 2014-09-24
+* https://github.com/PaulAsjes/mural
+* Copyright (c) 2014 Paul Asjes; Licensed MIT */
+// CSS support detection. Taken from here: http://www.sitepoint.com/detect-css3-property-browser-support/
+var Detect = (function() {
 
+	var	props = "transition,transform,webkitTransition,webkitTransform,msTransform".split(","),
+		CSSprefix = "Webkit,Moz,O,ms,Khtml".split(","),
+		d = document.createElement("detect"),
+		test = [],
+		p, pty;
+
+	// test prefixed code
+	function testPrefixes(prop) {
+		var	Uprop = prop.charAt(0).toUpperCase() + prop.substr(1),
+			All = (prop + ' ' + CSSprefix.join(Uprop + ' ') + Uprop).split(' ');
+
+		for (var n = 0; n < All.length; n++) {
+			if (d.style[All[n]] === "") return true;
+		}
+
+        return false;
+	}
+
+	for (p in props) {
+		pty = props[p];
+		test[pty] = testPrefixes(pty);
+	}
+
+	return test;
+}());
+
+Detect.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+var Item = function(el, settings) {
+    "use-strict";
+
+	var moving = false,
+        $ = window.jQuery,
+        element = el,
+		$element = $(element),
+		halfWidth = $element.width() / 2,
+		halfHeight = $element.height() / 2,
+        animationType = settings.animationType,
+        activeClass = settings.activeCSS,
+        draggable = settings.draggable;
+
+    function onDragStart(e) {
+        $element.css("z-index", 10);
+        if (activeClass) $element.addClass(activeClass);
+        moving = true;
+        e.preventDefault();
+    }
+
+    function onDragEnd() {
+        if (moving) {
+            $element.trigger(Item.DRAG_END);
+        }
+        moving = false;
+        $element.css("z-index", 1);
+        if (activeClass) $element.removeClass(activeClass);
+    }
+
+    function onMove(e) {
+        if (!moving) {
+            return;
+        }
+
+        var x = e.pageX;
+        var y = e.pageY;
+
+        if (e.touches) {
+            x = e.touches[0].pageX;
+            y = e.touches[0].pageY;
+        }
+
+        setPosition(x, y);
+    }
+
+    function setPosition(x, y) {
+        // this might not be needed
+        var offset = $element.parent().offset();
+
+        var dx = (x - halfWidth);
+        var dy = (y - halfHeight);
+
+        switch (animationType) {
+            // these are the same as we're not actually animating
+            case "velocity":
+            case "jquery":
+                $element.offset({left: dx, top: dy});
+                break;
+
+            default:
+            case "css":
+                if (!Detect.transform || !Detect.webkitTransform) {
+                    animationType = "jquery";
+                    return setPosition(x, y);
+                }
+                dx -= offset.left;
+                dy -= offset.top;
+                var transform = "translate(" + dx + "px, " + dy + "px)";
+
+                $element.css("-webkit-transform", transform);
+                $element.css("transform", transform);
+                break;
+        }
+    }
+
+    if (draggable) {
+        element.addEventListener("touchstart", onDragStart);
+        element.addEventListener("touchend", onDragEnd);
+        element.addEventListener("touchmove", onMove);
+
+        element.addEventListener("mousedown", onDragStart);
+        window.document.addEventListener("mouseup", onDragEnd);
+        window.document.addEventListener("mousemove", onMove);
+    }
+
+    this.getElement = function() {
+        return element;
+    };
+
+    this.getJQElement = function() {
+        return $element;
+    };
+};
+
+Item.DRAG_END = "dragend";
+Item.DRAG_START = "dragstart";
 (function ($) {
     "use strict";
 
@@ -269,3 +390,57 @@
         return $(elem).text().indexOf('awesome') !== -1;
     };
 }(jQuery));
+// collision detection between two elements
+var overlaps = (function(window) {
+    "use-strict";
+
+    var $ = window.jQuery;
+    function getPositions(elem)
+    {
+        var pos, width, height;
+        pos = $(elem).position();
+        width = $(elem).width();
+        height = $(elem).height();
+        return [[ pos.left, pos.left + width], [pos.top, pos.top + height]];
+    }
+
+    function getMousePositions(point, offset)
+    {
+        var p1,
+            p2,
+            left = offset.left || 0,
+            top = offset.top || 0;
+
+        p1 = point.x - left;
+        p2 = point.y - top;
+
+        return [[p1, p1 + 1], [p2, p2 + 1]];
+    }
+
+    function comparePositions(p1, p2)
+    {
+        var r1, r2;
+        r1 = p1[0] < p2[0] ? p1 : p2;
+        r2 = p1[0] < p2[0] ? p2 : p1;
+        return r1[1] > r2[0] || r1[0] === r2[0];
+    }
+
+    return function (a, b, useMouseCoords, offset)
+    {
+        var pos1,
+            pos2;
+        if (useMouseCoords)
+        {
+            pos1 = getMousePositions(a, offset);
+            pos2 = getPositions(b);
+
+            return comparePositions(pos1[0], pos2[0]) && comparePositions(pos1[1], pos2[1]);
+        }
+        else
+        {
+            pos1 = getPositions(a);
+            pos2 = getPositions(b);
+            return comparePositions(pos1[0], pos2[0]) && comparePositions(pos1[1], pos2[1]);
+        }
+    };
+})(window);
