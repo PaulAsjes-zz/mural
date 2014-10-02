@@ -20,7 +20,7 @@
       throws(block, [expected], [message])
   */
 
-  module('jQuery#awesome', {
+  module('jQuery#mural', {
     // This will run before each test in this module.
     setup: function() {
       this.elems = $('#qunit-fixture').children();
@@ -32,5 +32,7 @@
     // Not a bad test to run on collection methods.
     strictEqual(this.elems.mural(), this.elems, 'should be chainable');
   });
+
+
 
 }(jQuery));
