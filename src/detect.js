@@ -13,7 +13,9 @@ var Detect = (function() {
 			All = (prop + ' ' + CSSprefix.join(Uprop + ' ') + Uprop).split(' ');
 
 		for (var n = 0; n < All.length; n++) {
-			if (d.style[All[n]] === "") return true;
+			if (d.style[All[n]] === "") {
+				return true;
+			}
 		}
 
         return false;

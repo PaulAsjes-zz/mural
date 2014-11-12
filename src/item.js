@@ -13,7 +13,9 @@ var Item = function(el, settings) {
 
     function onDragStart(e) {
         $element.css("z-index", 10);
-        if (activeClass) $element.addClass(activeClass);
+        if (activeClass) {
+            $element.addClass(activeClass);
+        }
         moving = true;
         e.preventDefault();
     }
