@@ -26,7 +26,9 @@ var Item = function(el, settings) {
         }
         moving = false;
         $element.css("z-index", 1);
-        if (activeClass) $element.removeClass(activeClass);
+        if (activeClass) {
+            $element.removeClass(activeClass);
+        }
     }
 
     function onMove(e) {

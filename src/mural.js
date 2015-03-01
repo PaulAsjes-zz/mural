@@ -106,9 +106,13 @@
 
                     var n = 0;
                     if (dragged < dropped) {
-                        if (orientation === "left") n = -1;
+                        if (orientation === "left") {
+                            n = -1;
+                        }
                     } else {
-                        if (orientation === "right") n = 1;
+                        if (orientation === "right") {
+                            n = 1;
+                        }
                     }
 
                     items.splice(dropped + n, 0, items.splice(dragged, 1).shift());
@@ -208,8 +212,13 @@
             }
             $item[0].newL = Math.round(settings.containerOffset.left + adjustment + (column * wgap));
 
-            if ($item[0].newT < 0) $item[0].newT = 0;
-            if ($item[0].newL < 0) $item[0].newL = 0;
+            if ($item[0].newT < 0) {
+                $item[0].newT = 0;
+            }
+
+            if ($item[0].newL < 0) {
+                $item[0].newL = 0;
+            }
         }
 
         animateItems(items);
